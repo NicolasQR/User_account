@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="609.0" prefWidth="681.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="397.0" layoutY="24.0" prefHeight="17.0" prefWidth="120.0" text="Nombre" />
+      <ImageView fitHeight="35.0" fitWidth="42.0" layoutX="550.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+      <Button layoutX="610.0" layoutY="20.0" mnemonicParsing="false" onAction="#logOut" style="-fx-background-color: DARKSLATEGREY;" text="log Out" textFill="WHITE" />
+      <Label layoutX="225.0" layoutY="110.0" text="User account list" textFill="#e52929">
+         <font>
+            <Font name="System Bold Italic" size="24.0" />
+         </font>
+      </Label>
+      <TableView fx:id="AllList" layoutY="161.0" prefHeight="451.0" prefWidth="681.0">
+        <columns>
+          <TableColumn fx:id="listUsername" prefWidth="113.5999755859375" text="Username" />
+          <TableColumn fx:id="listGender" prefWidth="120.79998779296875" text="Gender" />
+            <TableColumn fx:id="listCareer" prefWidth="162.40000915527344" text="Career" />
+            <TableColumn fx:id="listBirthday" prefWidth="118.39996337890625" text="Birthday" />
+            <TableColumn fx:id="listBrowser" prefWidth="166.39996337890625" text="Browser" />
+        </columns>
+      </TableView>
+   </children>
+</Pane>
