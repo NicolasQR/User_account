@@ -2,10 +2,9 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
@@ -46,7 +45,7 @@
             <Font size="13.0" />
          </font>
       </Button>
-      <TextField layoutX="282.0" layoutY="229.0" prefHeight="25.0" prefWidth="186.0" />
+      <TextField fx:id="txtProfilePhoto" layoutX="282.0" layoutY="229.0" prefHeight="25.0" prefWidth="186.0" />
       <Label layoutX="199.0" layoutY="267.0" text="Gender:">
          <font>
             <Font size="18.0" />
@@ -74,13 +73,8 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <MenuButton layoutX="279.0" layoutY="469.0" mnemonicParsing="false" text="Choose an option">
-        <items>
-          <MenuItem mnemonicParsing="false" text="Action 1" />
-          <MenuItem mnemonicParsing="false" text="Action 2" />
-        </items>
-      </MenuButton>
       <Button layoutX="280.0" layoutY="520.0" mnemonicParsing="false" onAction="#goToSignin" style="-fx-background-color: DARKSLATEGREY;" text="Sign in " textFill="WHITE" />
       <Button layoutX="367.0" layoutY="520.0" mnemonicParsing="false" onAction="#createAccount" style="-fx-background-color: DARKSLATEGREY;" text="Create Account" textFill="WHITE" />
+      <ComboBox fx:id="comboBoxBrowser" layoutX="279.0" layoutY="469.0" prefHeight="25.0" prefWidth="186.0" promptText="Choose an option" />
    </children>
 </Pane>

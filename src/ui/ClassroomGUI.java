@@ -1,6 +1,12 @@
 package ui;
 
+
+
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,15 +18,19 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Path;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import model.Classroom;
-import model.Contact;
 import model.UserAccount;
 
 public class ClassroomGUI{
@@ -87,9 +97,33 @@ public class ClassroomGUI{
 
     @FXML
     private TextField txtPasswordSignUp;
+    
+    @FXML
+    private ComboBox<String> comboBoxBrowser;
+    
+    @FXML
+    private TextField txtProfilePhoto;
 
     @FXML
     void logIn(ActionEvent event) throws IOException {
+    	
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("List.fxml"));
+		
+		fxmlLoader.setController(this);    	
+		Parent root = fxmlLoader.load();
+    	
+		mainPane.getChildren().clear();
+    	mainPane.getChildren().setAll(root);
+    	
+    	initializeTableView();
+    	
+ 
+    }
+
+    @FXML
+    void signUp(ActionEvent event) throws IOException {
+    	
+    	
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Account.fxml"));
 		
 		fxmlLoader.setController(this);    	
@@ -97,21 +131,12 @@ public class ClassroomGUI{
     	
 		mainPane.getChildren().clear();
     	mainPane.getChildren().setAll(root);
-    }
-
-    @FXML
-    void signUp(ActionEvent event) throws IOException {
+    	
+    	comboBoxBrowser.getItems().addAll("Chrome", "Firefox", "Edge", "Safari", "Opera", "Thor");
     	
     	
-    	if(txtUsernameSignUp.getText() == useraccount.getUsername()) {
+    	/*if(txtUsernameSignUp.getText() == useraccount.getUsername()) {
     		
-    		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("List.fxml"));
-    		
-    		fxmlLoader.setController(this);    	
-    		Parent root = fxmlLoader.load();
-        	
-    		mainPane.getChildren().clear();
-        	mainPane.getChildren().setAll(root);
    		 	
     	} else {
     		
@@ -120,7 +145,7 @@ public class ClassroomGUI{
    		 	alert.setContentText("Ooops, The username or password is incorrect!");
 
    		 	alert.showAndWait();
-    	}
+    	}*/
  
     	 
     }
@@ -129,6 +154,41 @@ public class ClassroomGUI{
     @FXML
     void DirectionEscritory(ActionEvent event) {
 
+    	try {
+	    	Stage stage = new Stage();
+	    	FileChooser fileChooser = new FileChooser();
+	    	fileChooser.setTitle("Open Resource File");
+	    	
+	    	File file = fileChooser.showOpenDialog(stage);
+	    	txtProfilePhoto.setText(file.getPath());
+		} catch (Exception e) {
+			
+		} 
+    }
+    
+    @SuppressWarnings("unlikely-arg-type")
+	public Image assignPhoto() {
+    	
+    	Image img = null;
+    	
+    	if(txtProfilePhoto.equals("")) {
+    		
+		} else {
+			
+			try {
+				java.nio.file.Path source = Paths.get(txtProfilePhoto.getText());
+				java.nio.file.Path destination = Paths.get("src/profilePicture/PicturePhoto.png");
+				
+				Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
+				
+				img = new Image("/profilePicture/PicturePhoto.png");
+			
+			}catch(IOException e) {
+				
+			}
+		}
+    	
+    	return img;
     }
 
     
@@ -155,15 +215,15 @@ public class ClassroomGUI{
     	
     	if(checkBoxSoftware.isSelected()) {
     		cr += checkBoxSoftware.getText();
-    		cr += "";
+    		cr += "\n";
     		
-    	} else if(checkBoxTelematic.isSelected()) {
+    	} if(checkBoxTelematic.isSelected()) {
     		cr += checkBoxTelematic.getText();
-    		cr += "";
+    		cr += "\n";
     		
-    	} else if(checkBoxIndustrial.isSelected()) {
-    		cr += checkBoxIndustrial.isSelected();
-    		cr += "";
+    	} if(checkBoxIndustrial.isSelected()) {
+    		cr += checkBoxIndustrial.getText();
+    		cr += "\n";
     	}
     	
     	return cr;	
@@ -174,12 +234,48 @@ public class ClassroomGUI{
     @FXML
     void createAccount(ActionEvent event){
     	
-    	String gr = rbIsSelected();
-    	String cr = checkBoxIsSelected();
+    	String userbrowser = String.valueOf(comboBoxBrowser.getValue());
+    	String userbirthday = String.valueOf(txtBirthday.getValue());
+    	String usercareer = checkBoxIsSelected();
+    	String usergender = rbIsSelected();
+    	String userusername = txtUsernameAccount.getText();
+    	Image userimage = assignPhoto();
     	
-    	classroom.addContact(txtUsernameAccount.getText(),gr, cr, null, null, txtPasswordAccount.getText());
-    	txtUsernameAccount.setText("");
-    	txtPasswordAccount.setText("");
+    	if(!usercareer.equals("") && !userbirthday.equals("") && !userbrowser.equals("") &&
+    			!usergender.equals("") && !userusername.equals("")  && userimage != null) {
+    		
+    		classroom.addContact(userusername, usergender, usercareer, userbirthday, userbrowser, "", userimage);
+        	
+        	txtUsernameAccount.setText("");
+        	txtPasswordAccount.setText("");
+        	
+        	Alert alert = new Alert(AlertType.INFORMATION);
+        	alert.setTitle("User Creted");
+        	alert.setHeaderText(null);
+        	alert.setContentText("The user has been created successfully!");
+        	alert.showAndWait();
+        	
+        	rbMale.setSelected(false);
+        	rbFemale.setSelected(false);
+        	rbOther.setSelected(false);
+        	
+        	checkBoxSoftware.setSelected(false);
+        	checkBoxTelematic.setSelected(false);
+        	checkBoxIndustrial.setSelected(false);
+        	
+        	
+    		
+    		
+    	} else {
+    		
+    		Alert alert = new Alert(AlertType.WARNING);
+    		alert.setTitle("Warning");
+    		alert.setHeaderText("Unfilled fields");
+    		alert.setContentText("Please, put all the necessary information!");
+
+    		alert.showAndWait();
+    	}
+    	
     	
     }
 
@@ -193,6 +289,8 @@ public class ClassroomGUI{
 		mainPane.getChildren().clear();
     	mainPane.getChildren().setAll(root);
     }
+    
+    
 
     @FXML
     void selectedRbFemale(ActionEvent event) {
@@ -211,6 +309,8 @@ public class ClassroomGUI{
     	rbFemale.setSelected(false);
     	rbMale.setSelected(false);
     }
+    
+    
     
     @FXML
     void logOut(ActionEvent event) throws IOException {
@@ -238,9 +338,12 @@ public class ClassroomGUI{
     	ObservableList<UserAccount> datos;
     	datos = FXCollections.observableArrayList(classroom.getContacts());
     	
-    	todaLaTabla.setItems(datos);
-    	this.tablaName.setCellValueFactory(new PropertyValueFactory<Contact, String>("name"));
-    	this.tablaEmail.setCellValueFactory(new PropertyValueFactory<Contact, String>("email"));
+    	allList.setItems(datos);
+    	this.listUsername.setCellValueFactory(new PropertyValueFactory<UserAccount, String>("username"));
+    	this.listGender.setCellValueFactory(new PropertyValueFactory<UserAccount, String>("gender"));
+    	this.listCareer.setCellValueFactory(new PropertyValueFactory<UserAccount, String>("career"));
+    	this.listBirthday.setCellValueFactory(new PropertyValueFactory<UserAccount, String>("birthday"));
+    	this.listBrowser.setCellValueFactory(new PropertyValueFactory<UserAccount, String>("browser"));
     }
     
    
