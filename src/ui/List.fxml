@@ -18,7 +18,7 @@
             <Font name="System Bold Italic" size="24.0" />
          </font>
       </Label>
-      <TableView fx:id="AllList" layoutY="161.0" prefHeight="451.0" prefWidth="681.0">
+      <TableView fx:id="allList" layoutY="161.0" prefHeight="451.0" prefWidth="681.0">
         <columns>
           <TableColumn fx:id="listUsername" prefWidth="113.5999755859375" text="Username" />
           <TableColumn fx:id="listGender" prefWidth="120.79998779296875" text="Gender" />

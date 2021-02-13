@@ -14,7 +14,7 @@ public class Main extends Application {
 	
 	public Main() {
 		classroom = new Classroom();
-		classroomGUI = new ClassroomGUI();
+		classroomGUI = new ClassroomGUI(classroom, null);//Aquiiiiiiiiiiiiiiiiiiiiiii
 		
 	}
 
