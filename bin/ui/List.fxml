@@ -10,9 +10,12 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="609.0" prefWidth="681.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="397.0" layoutY="24.0" prefHeight="17.0" prefWidth="120.0" text="Nombre" />
-      <ImageView fitHeight="35.0" fitWidth="42.0" layoutX="550.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
-      <Button layoutX="610.0" layoutY="20.0" mnemonicParsing="false" onAction="#logOut" style="-fx-background-color: DARKSLATEGREY;" text="log Out" textFill="WHITE" />
+      <Label fx:id="usernameProfile" layoutX="341.0" layoutY="19.0" prefHeight="17.0" prefWidth="120.0" text="Nombre">
+         <font>
+            <Font name="Times New Roman Bold Italic" size="24.0" />
+         </font></Label>
+      <ImageView fx:id="profileImage" fitHeight="57.0" fitWidth="84.0" layoutX="453.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true" />
+      <Button layoutX="584.0" layoutY="20.0" mnemonicParsing="false" onAction="#logOut" style="-fx-background-color: DARKSLATEGREY;" text="log Out" textFill="WHITE" />
       <Label layoutX="225.0" layoutY="110.0" text="User account list" textFill="#e52929">
          <font>
             <Font name="System Bold Italic" size="24.0" />

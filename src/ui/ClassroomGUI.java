@@ -2,9 +2,11 @@ package ui;
 
 
 
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
@@ -19,15 +21,16 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Path;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.Classroom;
@@ -36,11 +39,8 @@ import model.UserAccount;
 public class ClassroomGUI{
 	
 	private Classroom classroom;
-	private UserAccount useraccount;
-	
 	public ClassroomGUI(Classroom cm, UserAccount cd) {
 		classroom = cm;
-		useraccount = cd;
 	}
 	
 	
@@ -49,6 +49,9 @@ public class ClassroomGUI{
 
     @FXML
     private CheckBox checkBoxTelematic;
+    
+    @FXML
+    private Label usernameProfile;
 
     @FXML
     private CheckBox checkBoxIndustrial;
@@ -70,6 +73,9 @@ public class ClassroomGUI{
 	
 	@FXML
 	private Pane mainPane;
+	
+	@FXML
+    private ImageView profileImage;
 	
 	@FXML
     private DatePicker txtBirthday;
@@ -96,27 +102,56 @@ public class ClassroomGUI{
     private TextField txtUsernameSignUp;
 
     @FXML
-    private TextField txtPasswordSignUp;
-    
-    @FXML
     private ComboBox<String> comboBoxBrowser;
     
     @FXML
     private TextField txtProfilePhoto;
+    
+    @FXML
+    private PasswordField pfPasswordSigin;
 
     @FXML
     void logIn(ActionEvent event) throws IOException {
     	
-    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("List.fxml"));
-		
-		fxmlLoader.setController(this);    	
-		Parent root = fxmlLoader.load();
     	
-		mainPane.getChildren().clear();
-    	mainPane.getChildren().setAll(root);
     	
-    	initializeTableView();
+  
     	
+    	for(int i = 0; i < classroom.getUsers().size() ; i++) {
+    		
+    		if(classroom.getUsers().get(i).getUsername().equals(txtUsernameSignUp.getText()) &&
+    				classroom.getUsers().get(i).getPassword().equals(String.valueOf(pfPasswordSigin.getCharacters()))) {
+    			
+    			
+    			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("List.fxml"));
+    			
+    			fxmlLoader.setController(this);    	
+    			Parent root = fxmlLoader.load();
+    	    	
+    			mainPane.getChildren().clear();
+    	    	mainPane.getChildren().setAll(root);
+    	    	
+    	    	initializeTableView();
+    	    	
+    	    	usernameProfile.setText(classroom.getUsers().get(i).getUsername());
+    	    	
+    	    	profileImage.setImage(classroom.getUsers().get(0).getProfilePicture());
+    	    	
+    	    	break;
+    	    	
+    			
+    		} else if( i == (classroom.getUsers().size() -1) ){
+    			
+    			Alert alert = new Alert(AlertType.ERROR);
+       		 	alert.setTitle("Log in incorrect");
+       		 	alert.setContentText("Ooops, The username or password is incorrect!");
+
+       		 	alert.showAndWait();
+    		}
+    		
+    	}
+    	
+
  
     }
 
@@ -133,20 +168,6 @@ public class ClassroomGUI{
     	mainPane.getChildren().setAll(root);
     	
     	comboBoxBrowser.getItems().addAll("Chrome", "Firefox", "Edge", "Safari", "Opera", "Thor");
-    	
-    	
-    	/*if(txtUsernameSignUp.getText() == useraccount.getUsername()) {
-    		
-   		 	
-    	} else {
-    		
-        	Alert alert = new Alert(AlertType.ERROR);
-   		 	alert.setTitle("Log in incorrect");
-   		 	alert.setContentText("Ooops, The username or password is incorrect!");
-
-   		 	alert.showAndWait();
-    	}*/
- 
     	 
     }
     
@@ -166,7 +187,7 @@ public class ClassroomGUI{
 		} 
     }
     
-    @SuppressWarnings("unlikely-arg-type")
+	@SuppressWarnings("unlikely-arg-type")
 	public Image assignPhoto() {
     	
     	Image img = null;
@@ -176,8 +197,8 @@ public class ClassroomGUI{
 		} else {
 			
 			try {
-				java.nio.file.Path source = Paths.get(txtProfilePhoto.getText());
-				java.nio.file.Path destination = Paths.get("src/profilePicture/PicturePhoto.png");
+				Path source = Paths.get(txtProfilePhoto.getText());
+				Path destination = Paths.get("src/profilePicture/PicturePhoto.png");
 				
 				Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
 				
@@ -240,11 +261,14 @@ public class ClassroomGUI{
     	String usergender = rbIsSelected();
     	String userusername = txtUsernameAccount.getText();
     	Image userimage = assignPhoto();
+    	String userpassword = String.valueOf(txtPasswordAccount.getCharacters());
+    	
     	
     	if(!usercareer.equals("") && !userbirthday.equals("") && !userbrowser.equals("") &&
-    			!usergender.equals("") && !userusername.equals("")  && userimage != null) {
+    			!usergender.equals("") && !userusername.equals("")  &&
+    			userimage != null && !userpassword.equals("")) {
     		
-    		classroom.addContact(userusername, usergender, usercareer, userbirthday, userbrowser, "", userimage);
+    		classroom.addContact(userusername, usergender, usercareer, userbirthday, userbrowser, userpassword, userimage);
         	
         	txtUsernameAccount.setText("");
         	txtPasswordAccount.setText("");
@@ -263,7 +287,9 @@ public class ClassroomGUI{
         	checkBoxTelematic.setSelected(false);
         	checkBoxIndustrial.setSelected(false);
         	
-        	
+        	txtProfilePhoto.setText("");
+        	txtBirthday.getEditor().clear();
+        	comboBoxBrowser.getSelectionModel().select("Chose an option");
     		
     		
     	} else {
@@ -336,7 +362,7 @@ public class ClassroomGUI{
     public  void initializeTableView() {
     	
     	ObservableList<UserAccount> datos;
-    	datos = FXCollections.observableArrayList(classroom.getContacts());
+    	datos = FXCollections.observableArrayList(classroom.getUsers());
     	
     	allList.setItems(datos);
     	this.listUsername.setCellValueFactory(new PropertyValueFactory<UserAccount, String>("username"));

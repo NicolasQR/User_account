@@ -20,7 +20,7 @@ private List<UserAccount> users;
 		users.add(new UserAccount(username, gender, career, birthday, browser, password, profilePicture));
 	}
 	
-	public List<UserAccount> getContacts(){
+	public List<UserAccount> getUsers(){
 		return users; 
 	}
 }

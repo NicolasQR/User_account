@@ -13,15 +13,16 @@ public class UserAccount {
 	private String password;
 	private Image profilePicture;
 	
-	public UserAccount(String username, String gender, String career, String birthday,
-			String browser, String password, Image profilePicture) {
+	public UserAccount(String usernameN, String genderN, String careerN, String birthdayN,
+			String browserN, String passwordN, Image profilePictureN) {
 		
-		this.username = username;
-		this.gender = gender;
-		this.career = career;
-		this.birthday = birthday;
-		this.browser = browser;
-		this.setProfilePicture(profilePicture);
+		username = usernameN;
+		gender = genderN;
+		career = careerN;
+		birthday = birthdayN;
+		browser = browserN;
+		profilePicture = profilePictureN;
+		password = passwordN;
 	}
 
 	public String getBirthday() {
